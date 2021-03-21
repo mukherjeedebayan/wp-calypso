@@ -1,0 +1,519 @@
+@import '~@automattic/onboarding/styles/mixins';
+
+body.is-section-signup {
+	// Use WordPress.com’s brand color for the signup background
+	background: var( --color-wordpress-com );
+
+	&.is-white-signup {
+		background: var( --studio-white );
+
+		.layout:not( .dops ) .wpcom-site__logo {
+			fill: var( --color-neutral-10 );
+			opacity: 1;
+
+			path {
+				fill: var( --color-neutral-10 );
+				opacity: 1;
+			}
+		}
+	}
+
+	&.is-p2-signup {
+		background: var( --p2-color-text-white );
+		color: var( --p2-color-text );
+
+		&.has-loading-screen-signup {
+			background: var( --p2-color-text );
+			color: var( --p2-color-text-white );
+			&::before {
+				content: '';
+				position: absolute;
+				display: block;
+				width: 100%;
+				height: 100%;
+				background: linear-gradient( 126.81deg, #001424 7.92%, #02223a 89.27% );
+				animation: p2-fade 5s ease-in-out infinite alternate;
+			}
+		}
+
+		.layout__content {
+			padding: 0;
+		}
+
+		.layout:not( .dops ) .step-wrapper {
+			margin: 0 0 24px;
+		}
+
+		@include breakpoint-deprecated( '<480px' ) {
+			.locale-suggestions {
+				margin-top: 0;
+				.notice {
+					border-radius: 0;
+				}
+			}
+		}
+	}
+
+	// Adjust the padding as we no longer
+	// show the masterbar.
+	.layout__content {
+		padding: 48px 0 0;
+	}
+
+	// Hide the masterbar for realz
+	.masterbar {
+		display: none;
+	}
+
+	// Force the masterbar for Crowdsignal OAuth pages
+	.crowdsignal {
+		.masterbar__crowdsignal {
+			display: block;
+		}
+
+		.layout__content {
+			padding: 140px 0 0;
+		}
+	}
+
+	.layout__secondary {
+		background: var( --color-primary );
+		border: 0;
+	}
+}
+
+// Notice the :not(.dops) selector. I've added this to try and
+// avoid stepping on the toes of our oauth users, like Crowdsignal.
+body.is-section-signup .layout:not( .dops ),
+body.is-section-signup .layout.gravatar {
+	// Update the logo that appears when loading Calypso
+	// to match the homepage, using primary-dark with opacity.
+	.wpcom-site__logo {
+		fill: var( --color-primary-dark );
+		opacity: 0.3;
+	}
+
+	// If there's an error lets make it look a little better
+	// on the primary colored background.
+	.empty-content {
+		.empty-content__illustration {
+			background: var( --color-surface );
+			padding-bottom: 16px;
+			margin-bottom: 24px;
+			border-radius: 6px; /* stylelint-disable-line */
+			@include elevation( 3dp );
+		}
+
+		.empty-content__title {
+			color: var( --color-text-inverted );
+		}
+	}
+
+	//Masterbar is hidden but still has height
+	//which is how sticky panel offset is calculated.
+	//Setting height to zero removes the offset
+	//so the sticky panel sticks to the top.
+	&.has-no-masterbar .masterbar {
+		height: 0;
+	}
+
+	// This allows us to position the search suggestions
+	// relative to their fieldset.
+	.form-fieldset {
+		position: relative;
+	}
+
+	.suggestions {
+		position: absolute;
+		top: 42px;
+		left: 0;
+		right: 0;
+		max-height: 350px;
+		overflow: auto;
+		@include elevation( 2dp );
+	}
+
+	@include breakpoint-deprecated( '<660px' ) {
+		button:not( .is-compact ) {
+			font-size: $font-body;
+			padding-top: 12px;
+			padding-bottom: 14px;
+		}
+	}
+
+	// Back button
+	.navigation-link.button.back {
+		position: absolute;
+		top: 6px;
+		left: 11px;
+	}
+}
+
+// The container wrapped around every
+// step in signup
+body.is-section-signup .layout:not( .dops ) .step-wrapper {
+	max-width: 960px;
+	margin: 0 auto;
+
+	// Some steps (like plans) need a larger
+	// width column.
+	&.is-wide-layout {
+		max-width: 1040px;
+	}
+
+	// pressable-nux has no title or subtitle so
+	// needs to not hide the (W) logo
+	.is-pressable-nux & {
+		margin-top: 30px;
+	}
+
+	// On small screens remove the margin from the
+	// bottom of the cards.
+	@include breakpoint-deprecated( '<660px' ) {
+		.card {
+			margin-bottom: 0;
+		}
+	}
+}
+
+// Signup headings
+body.is-section-signup .layout:not( .dops ):not( .is-wccom-oauth-flow ) .formatted-header,
+body.is-section-signup .layout.gravatar .formatted-header {
+	margin: 0 0 16px;
+
+	.formatted-header__title {
+		margin: 0;
+		font-weight: 400;
+		color: var( --color-text-inverted );
+	}
+
+	.formatted-header__subtitle {
+		margin: 0;
+		font-size: $font-body;
+		color: var( --color-text-inverted );
+	}
+
+	a {
+		color: var( --color-neutral-0 );
+		text-decoration: underline;
+
+		&:hover {
+			color: var( --color-text-inverted );
+		}
+	}
+}
+
+// Skip button
+.step-wrapper__buttons {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.is-section-signup .layout__content,
+.is-section-signup .layout__primary {
+	overflow: visible;
+}
+
+.layout.is-wccom-oauth-flow {
+	@import 'jetpack-connect/colors.scss';
+	@include woocommerce-colors();
+	background-color: var( --color-woocommerce-onboarding-background );
+	height: 100%;
+
+	.woocommerce-muriel-text-control,
+	.muriel-input-text {
+		border-color: var( --color-neutral-20 );
+
+		.text-control__label,
+		.components-base-control__label {
+			color: var( --color-neutral-50 );
+			font-size: $font-body-extra-small;
+			font-weight: normal;
+		}
+
+		&.active {
+			box-shadow: 0 0 0 2px var( --studio-woocommerce-purple-60 );
+			border-color: transparent;
+		}
+	}
+
+	.layout__content {
+		padding-top: 48px;
+	}
+
+	.masterbar {
+		display: none;
+	}
+
+	.signup-form__woocommerce-wrapper {
+		text-align: center;
+		border-bottom: 1px solid var( --color-neutral-50 );
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 56px;
+
+		svg > g {
+			transform: translateX( 50% );
+		}
+	}
+
+	.signup-form__woocommerce-logo {
+		margin: 0;
+		text-align: center;
+		margin-right: auto;
+		margin-left: auto;
+		padding-left: 0;
+		display: block;
+		height: 56px;
+		border-bottom: 1px solid var( --color-woocommerce-header-border );
+		background: var( --color-text-inverted );
+
+		svg {
+			margin-top: 15px;
+		}
+	}
+
+	.signup-form__woocommerce-heading {
+		margin-top: 32px;
+	}
+
+	.formatted-header {
+		max-width: 476px;
+		margin-right: auto;
+		margin-left: auto;
+
+		.formatted-header__subtitle {
+			color: var( --color-primary-10 );
+			margin-top: 1em;
+			font-size: $font-body;
+			line-height: 24px;
+			font-weight: 400;
+		}
+	}
+
+	.logged-out-form {
+		max-width: 476px;
+	}
+
+	.logged-out-form__link-item {
+		text-align: center;
+		text-decoration: underline;
+		color: var( --studio-gray-60 );
+		font-size: $font-body-small;
+	}
+
+	.signup-form__terms-of-service-link {
+		text-align: left;
+		color: var( --studio-gray-60 );
+	}
+
+	.signup-form__terms-of-service-link a,
+	.signup-form__social-buttons-tos a {
+		color: var( --studio-gray-60 );
+		text-decoration: underline;
+	}
+
+	.signup-form__social {
+		padding-bottom: 0;
+		margin-top: 16px;
+		p {
+			font-size: $font-body-extra-small;
+			color: var( --studio-gray-60 );
+		}
+
+		.social-buttons__button {
+			border: 1px solid var( --studio-pink-50 );
+			color: var( --studio-pink-50 );
+			box-shadow: none;
+			max-width: 250px;
+			height: 48px;
+		}
+	}
+
+	.logged-out-form__footer {
+		text-align: center;
+		.button.is-primary {
+			border: 0;
+			box-shadow: none;
+			max-width: 310px;
+			margin-right: auto;
+			margin-left: auto;
+			height: 48px;
+		}
+	}
+}
+
+// Background color and plans grid overrides for new flow
+body.is-section-signup.is-new-launch-flow {
+	background: var( --color-white );
+
+	.signup-header {
+		display: none;
+	}
+
+	.signup-processing-screen__content {
+		color: var( --color-text );
+	}
+
+	.signup-processing-screen__floaties .gridicon {
+		fill: var( --color-text );
+	}
+
+	.button.is-borderless.navigation-link {
+		color: var( --color-text );
+
+		svg {
+			fill: var( --color-text );
+		}
+	}
+
+	.flow-progress-indicator.flow-progress-indicator__new-launch {
+		color: var( --color-text );
+	}
+
+	.plan-features__header {
+		border-color: transparent;
+	}
+
+	tr:last-child .plan-features__table-item,
+	tr:first-child .plan-features__table-item {
+		border-radius: 0;
+	}
+
+	.plan-features__header,
+	.plan-features__table th,
+	.plan-features__table td {
+		background: rgba( 248, 248, 248, 0.7 );
+	}
+
+	.plan-price__integer {
+		font-weight: 600;
+	}
+
+	.plan-price__integer {
+		font-weight: 600;
+	}
+
+	.plan-features__header-title {
+		font-weight: 600;
+	}
+
+	.formatted-header__title {
+		@include onboarding-heading-text-mobile;
+
+		@include breakpoint-deprecated( '>480px' ) {
+			@include onboarding-heading-text;
+		}
+	}
+
+	.formatted-header__subtitle {
+		margin-bottom: 16px;
+	}
+}
+
+// Text and heading color override for new flow
+body.is-section-signup.is-new-launch-flow .layout:not( .dops ):not( .is-wccom-oauth-flow ) {
+	&.gravatar .formatted-header,
+	.formatted-header {
+		.formatted-header__title {
+			color: var( --color-text );
+		}
+
+		.formatted-header__subtitle {
+			color: var( --color-text );
+		}
+
+		a {
+			color: var( --color-link );
+
+			&:hover {
+				color: var( --color-link-dark );
+			}
+		}
+	}
+
+	.empty-content .empty-content__title {
+		color: var( --color-text );
+	}
+}
+
+/**
+ * Common styles for reskinSignupFlow a/b test
+ */
+body.is-section-signup.is-white-signup .signup.is-onboarding {
+	$gray-100: #101517;
+	$gray-60: #50575e;
+	$gray-50: #646970;
+	$breakpoint-mobile: 660px;
+
+	--color-accent: #117ac9;
+	--color-accent-60: #0e64a5;
+
+	.signup-header {
+		.wordpress-logo {
+			position: absolute;
+			left: 24px;
+			top: 20px;
+			fill: var( --color-text );
+			transform-origin: 0 0;
+		}
+		.signup-header__right {
+			top: 22px;
+			right: 24px;
+
+			.flow-progress-indicator {
+				color: var( --color-text );
+				font-weight: normal;
+			}
+		}
+	}
+
+	.navigation-link.button.back {
+		svg {
+			display: none;
+		}
+
+		color: $gray-50;
+		top: 23px;
+		left: 72px;
+		text-decoration: underline;
+		font-weight: normal;
+	}
+
+	.formatted-header {
+		margin-top: 48px;
+		.formatted-header__title {
+			@include onboarding-font-recoleta;
+			color: $gray-100;
+			letter-spacing: 0.2px;
+			font-size: 2.6rem; /* stylelint-disable-line */
+
+			@media screen and ( max-width: $breakpoint-mobile ) {
+				max-width: 328px;
+				font-size: 1.6rem; /* stylelint-disable-line */
+				text-align: left;
+				padding: 0 16px;
+				margin: 0 auto;
+			}
+		}
+
+		.formatted-header__subtitle {
+			color: $gray-60;
+
+			@media screen and ( max-width: $breakpoint-mobile ) {
+				max-width: 328px;
+				font-size: 0.875rem;
+				text-align: left;
+				padding: 0 16px;
+				margin: 0 auto;
+			}
+		}
+	}
+
+	button.is-primary {
+		box-shadow: none;
+		border: 0;
+	}
+}

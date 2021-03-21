@@ -1,0 +1,50 @@
+.domain-search-results__transfer-card {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 12px;
+
+	@include breakpoint-deprecated( '>480px' ) {
+		align-items: center;
+		flex-direction: row;
+	}
+}
+
+.domain-search-results__transfer-card-copy {
+	font-size: $font-body;
+
+	p {
+		margin-bottom: 0;
+	}
+
+	@include breakpoint-deprecated( '>480px' ) {
+		padding-right: 10px;
+	}
+
+	@include breakpoint-deprecated( '>660px' ) {
+		font-size: $font-title-small;
+
+		p {
+			font-size: $font-body;
+		}
+	}
+}
+
+.domain-search-results__transfer-card-link {
+	flex-shrink: 0;
+	flex-grow: 1;
+	width: 100%;
+
+	a {
+		text-align: right;
+		display: block;
+		padding: 15px 0 0;
+	}
+
+	@include breakpoint-deprecated( '>480px' ) {
+		width: auto;
+
+		a {
+			padding: 0;
+		}
+	}
+}

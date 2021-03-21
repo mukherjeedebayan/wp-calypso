@@ -1,0 +1,69 @@
+{
+	"extends": [ "config:base", "default:pinDigestsDisabled" ],
+	"packageRules": [
+		{
+			"extends": "monorepo:wordpress",
+			"separateMajorMinor": false,
+			"prPriority": 2,
+			"reviewers": [ "team:@Automattic/cylon", "team:@Automattic/ganon", "team:@Automattic/luna" ]
+		},
+		{
+			"extends": "monorepo:babel",
+			"prPriority": 1
+		},
+		{
+			"extends": "monorepo:lodash",
+			"prPriority": 1
+		},
+		{
+			"extends": "monorepo:react",
+			"prPriority": 1
+		},
+		{
+			"packagePatterns": [ "^redux$", "^react-redux$" ],
+			"prPriority": 1
+		},
+		{
+			"packageName": "typescript",
+			"prPriority": 1
+		},
+		{
+			"groupName": "Type definitions",
+			"packagePatterns": [ "^@types/" ],
+			"prPriority": 1
+		},
+		{
+			"packagePatterns": [ "^webpack" ],
+			"prPriority": 1
+		},
+		{
+			"packageName": "tinymce",
+			"allowedVersions": "^4"
+		},
+		{
+			"extends": "monorepo:storybook",
+			"prPriority": 1
+		},
+		{
+			"paths": [ "apps/editing-toolkit/package.json" ],
+			"packageName": "newspack-blocks",
+			"reviewers": [ "team:@Automattic/create", "team:@Automattic/ajax" ],
+			"groupName": "Newspack Blog Posts Block Update"
+		}
+	],
+	"statusCheckVerify": true,
+	"rangeStrategy": "bump",
+	"ignoreDeps": [ "jquery" ],
+	"labels": [ "Framework", "[Type] Task" ],
+	"lockFileMaintenance": {
+		"enabled": true,
+		"schedule": "every weekday"
+	},
+	"postUpdateOptions": "yarnDedupeHighest",
+	"prConcurrentLimit": 10,
+	"prHourlyLimit": 6,
+	"semanticCommits": true,
+	"semanticCommitType": "chore",
+	"masterIssue": true,
+	"masterIssueTitle": "Renovate Dependency Updates"
+}
